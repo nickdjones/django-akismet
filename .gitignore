@@ -1,0 +1,8 @@
+bin
+lib
+lib64
+include
+database.db
+*.pyc
+*.swp
+local_settings.py
