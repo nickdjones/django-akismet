@@ -11,23 +11,24 @@ By default it will update the admin interface for your comment model to add
 existing messages.
 
 Example::
+
     # models.py
     class MyComment(models.Model):
         comment = models.CharField(.....)
         user = models.ForeignKey(User)
-
+    
     # someapp/spam_checks.py
     from dj_akismet import spam_checks
     from dj_akismet.utils import do_spam_check
-
+    
     class MyCommentCheck(AkismetCheck):
-
+    
         def get_data(self):
             return {'comment_author': self.object.author.username,
                     'comment_author_email': self.object.author.email,
                     ...
                     }
-
+    
         def get_content(self):
             return self.object.comment
 
@@ -37,12 +38,12 @@ Example::
         def is_ham(self):
             self.object.publish()
     spam_checks.register(MyCommentCheck, model=MyComment)
-
+    
     # Set up a signal to check for spam when comments are posted (optional)
     post_save.connect(spam_check, 
                       sender=MyComment,
                       dispatch_uid='do_spam_check')
-
+    
     # settings.py
     # List of modules to search for AkismetCheck subclasses
     AKISMET_CHECK_SOURCES = (
